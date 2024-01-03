@@ -7,7 +7,7 @@ Use App\Models\User;
 
 class UserController extends Controller
 {
-    public readonly User $user;
+    private User $user;
 
     public function __construct(){
         $this->user = new User();
@@ -41,7 +41,7 @@ class UserController extends Controller
         if($created){
             return redirect()->back()->with('message', 'Usuario cadastrado!');
            }
-           return redirect()->back()->with('message', 'Erro ao cadastrar o usuario!');
+        return redirect()->back()->with('message', 'Erro ao cadastrar o usuario!');
     }
 
     /**
