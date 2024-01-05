@@ -15,7 +15,10 @@ use App\Http\Controllers\Api\V1\InvoiceController;
 
 
 Route::get('/users',[UserController::class, 'index']);
+Route::post('/users',[UserController::class, 'store']);
 Route::get('/users/{user}',[UserController::class, 'show']);
+Route::delete('/users/{user}/delete',[UserController::class, 'destroy']);
+Route::put('/users/{user}/update',[UserController::class, 'update']);
 
 
 Route::post('/login', [AuthController::class, 'login']);
