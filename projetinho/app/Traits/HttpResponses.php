@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Traits;
+namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\MessageBag;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-trait HttpResponses{
-
+class HttpResponses extends Controller
+{
     public function  response(string $message, string|int $status, array|Model|JsonResource $data = []){
         return response()->json([
             'message' => $message,

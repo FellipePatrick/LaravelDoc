@@ -1,13 +1,17 @@
 <?php
 
-namespace App\Traits;
+namespace App\Http\Controllers;
 
 use Illuminate\Support\MessageBag;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-trait HttpResponses{
-
+class Controller extends BaseController
+{
+    use AuthorizesRequests, ValidatesRequests;
     public function  response(string $message, string|int $status, array|Model|JsonResource $data = []){
         return response()->json([
             'message' => $message,
@@ -23,5 +27,4 @@ trait HttpResponses{
             'errors' => $errors
         ], $status);
     }
-
 }

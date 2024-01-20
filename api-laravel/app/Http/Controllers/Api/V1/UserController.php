@@ -25,15 +25,24 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = \Validator::make($request->all(), [
+        $request->validate([
             'name' => 'required',
             'email' => 'required',
             'password' => 'required'
         ]);
-        if($validator->fails()){
-            return $this->error('Validator invalid', 422, $validator->errors());
-        }
-        $created = User::create($validator->validated());
+
+        $user = User::where('email', $request->email)->first();
+        if($user){
+            return $this->error('User already exists', 422);
+        };
+
+        $created = User::create(
+            [
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => $request->password
+            ]
+        );
         if($created){
             return $this->response('User created', 200, $created);
         }
@@ -52,15 +61,18 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $validator = \Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required',
-            'password' => 'required'
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|max:255',
+            'password' => 'required',
         ]);
-        if($validator->fails()){
-            return $this->error('Data Invalid', 422, $validator->errors());
+
+        $user = User::where('email', $request->email)->first();
+
+        if(!$user){
+            return $this->error('Data Invalid', 422);
         }
-        $validated = $validator->validated();
         $updated = $user->update([
             'name' =>  $validated['name'],
             'email' =>  $validated['email'],
